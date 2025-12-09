@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1: Apex - Official Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -2;
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100vw;
+            min-height: 100vh;
+            width: 177.77777778vh;
+            height: 56.25vw;
+            transform: translate(-50%, -50%);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(26, 26, 46, 0.8) 50%, rgba(229, 9, 20, 0.3) 100%);
+            z-index: -1;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            background: linear-gradient(45deg, #fff, #e50914, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .apex {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 1rem;
+            margin-bottom: 3rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(229, 9, 20, 0.5)); }
+            to { filter: drop-shadow(0 0 40px rgba(229, 9, 20, 0.8)); }
+        }
+
+        .auth-section {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(229, 9, 20, 0.4);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e50914;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e50914;
+        }
+
+        .form-group input.error {
+            border-color: #ff4444;
+        }
+
+        .form-group input.valid {
+            border-color: #44ff44;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .auth-btn {
+            background: linear-gradient(135deg, #e50914 0%, #ff0a16 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .auth-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.6);
+        }
+
+        .switch-auth {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .switch-auth a {
+            color: #e50914;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
+
+        .content-section {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(229, 9, 20, 0.3);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .tab-btn:hover {
+            border-color: #e50914;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #e50914 0%, #ff0a16 100%);
+            border-color: #e50914;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(229, 9, 20, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box h2 {
+            color: #e50914;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .info-box h3 {
+            color: #e50914;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .info-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box ul {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .info-box ul li {
+            font-size: 1.1rem;
+            line-height: 2;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .info-box ul li::before {
+            content: "▸";
+            color: #e50914;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-highlight {
+            background: rgba(229, 9, 20, 0.1);
+            border: 2px solid rgba(229, 9, 20, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feature-highlight:hover {
+            transform: translateY(-5px);
+            border-color: #e50914;
+        }
+
+        .feature-highlight h4 {
+            color: #e50914;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            .apex {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <iframe src="https://player.vimeo.com/video/1145058533?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1&quality=1080p" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; encrypted-media"></iframe>
+    </div>
+    <div class="video-overlay"></div>
+
+    <div class="hero">
+        <div class="logo">F1</div>
+        <div class="apex">APEX</div>
+        
+        <div class="auth-section" id="loginSection">
+            <h2 style="margin-bottom: 2rem; font-size: 1.8rem;">Login to Download</h2>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
+            </div>
+            
+            <button class="auth-btn" id="loginBtn">Login</button>
+            
+            <div class="switch-auth">
+                Don't have an account? <a id="showSignupLink">Sign up here</a>
+            </div>
+        </div>
+
+        <div class="auth-section hidden" id="signupSection">
+            <h2 style="margin-bottom: 2rem; font-size: 1.8rem;">Create Account</h2>
+            
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="signupUsername" placeholder="Minimum 4 characters">
+                <div class="error-message" id="usernameError">Username must be at least 4 characters long</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email">
+                <div class="error-message" id="emailError">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="signupPassword" placeholder="Create a password">
+            </div>
+            
+            <button class="auth-btn" id="signupBtn" disabled>Sign Up</button>
+            
+            <div class="switch-auth">
+                Already have an account? <a id="showLoginLink">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section hidden" id="contentSection">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="download">Download</button>
+            <button class="tab-btn" data-tab="features">Features</button>
+            <button class="tab-btn" data-tab="gameplay">Gameplay</button>
+            <button class="tab-btn" data-tab="requirements">System Requirements</button>
+            <button class="tab-btn" data-tab="multiplayer">Multiplayer</button>
+        </div>
+
+        <div class="tab-content active" id="download-tab">
+            <div class="info-box">
+                <h2>Download F1: Apex</h2>
+                <p>Experience the ultimate Formula 1 racing simulation.</p>
+                
+                <h3>Select Your Platform</h3>
+                <div class="grid-2" style="margin-bottom: 2rem;">
+                    <div class="feature-highlight" data-platform="windows">
+                        <h4>🪟 Windows</h4>
+                        <p>Windows 10/11 (64-bit)</p>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Download Size: 4.2 GB</p>
+                    </div>
+                    <div class="feature-highlight" data-platform="mac">
+                        <h4>🍎 MacOS</h4>
+                        <p>macOS 11 Big Sur or later</p>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Download Size: 4.5 GB</p>
+                    </div>
+                    <div class="feature-highlight" data-platform="linux">
+                        <h4>🐧 Linux</h4>
+                        <p>Ubuntu 20.04+ / Fedora 35+</p>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Download Size: 4.1 GB</p>
+                    </div>
+                </div>
+                
+                <button class="auth-btn" id="downloadBtn">Download for Windows</button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="features-tab">
+            <div class="info-box">
+                <h2>Game Features</h2>
+                <p>F1: Apex delivers the most comprehensive Formula 1 racing experience.</p>
+                <h3>Official F1 License</h3>
+                <p>Race with all official 2024 teams, drivers, and circuits.</p>
+                <ul>
+                    <li>20+ Licensed Vehicles from all F1 teams</li>
+                    <li>23 Authentic Circuits from the championship</li>
+                    <li>Dynamic weather system</li>
+                    <li>Advanced tire modeling</li>
+                    <li>Realistic damage system</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="gameplay-tab">
+            <div class="info-box">
+                <h2>Gameplay Mechanics</h2>
+                <p>Master the art of Formula 1 racing.</p>
+                <h3>Driving Assists</h3>
+                <ul>
+                    <li>Automatic or manual transmission</li>
+                    <li>Adjustable brake assist</li>
+                    <li>Traction control settings</li>
+                    <li>Racing line guidance</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="requirements-tab">
+            <div class="info-box">
+                <h2>System Requirements</h2>
+                <h3>Minimum</h3>
+                <ul>
+                    <li><strong>OS:</strong> Windows 10 64-bit</li>
+                    <li><strong>Processor:</strong> Intel i5-6600K</li>
+                    <li><strong>Memory:</strong> 8 GB RAM</li>
+                    <li><strong>Graphics:</strong> NVIDIA GTX 1060</li>
+                    <li><strong>Storage:</strong> 15 GB</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="multiplayer-tab">
+            <div class="info-box">
+                <h2>Multiplayer Experience</h2>
+                <p>Compete against racers worldwide.</p>
+                <h3>Game Modes</h3>
+                <ul>
+                    <li>Sprint Races</li>
+                    <li>Grand Prix</li>
+                    <li>Time Trials</li>
+                    <li>Custom Lobbies</li>
+                    <li>Cross-platform play</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var selectedPlatform = 'Windows';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show signup form
+            document.getElementById('showSignupLink').addEventListener('click', function() {
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('signupSection').classList.remove('hidden');
+            });
+
+            // Show login form
+            document.getElementById('showLoginLink').addEventListener('click', function() {
+                document.getElementById('signupSection').classList.add('hidden');
+                document.getElementById('loginSection').classList.remove('hidden');
+            });
+
+            // Validation
+            var usernameValid = false;
+            var emailValid = false;
+
+            document.getElementById('signupUsername').addEventListener('input', function() {
+                var val = this.value;
+                usernameValid = val.length >= 4;
+                
+                if (val.length > 0 && val.length < 4) {
+                    this.classList.add('error');
+                    this.classList.remove('valid');
+                    document.getElementById('usernameError').classList.add('show');
+                } else if (val.length >= 4) {
+                    this.classList.remove('error');
+                    this.classList.add('valid');
+                    document.getElementById('usernameError').classList.remove('show');
+                }
+                checkSignupValid();
+            });
+
+            document.getElementById('signupEmail').addEventListener('input', function() {
+                var val = this.value;
+                emailValid = val.includes('@');
+                
+                if (val.length > 0 && !val.includes('@')) {
+                    this.classList.add('error');
+                    this.classList.remove('valid');
+                    document.getElementById('emailError').classList.add('show');
+                } else if (val.includes('@')) {
+                    this.classList.remove('error');
+                    this.classList.add('valid');
+                    document.getElementById('emailError').classList.remove('show');
+                }
+                checkSignupValid();
+            });
+
+            document.getElementById('signupPassword').addEventListener('input', checkSignupValid);
+
+            function checkSignupValid() {
+                var pass = document.getElementById('signupPassword').value;
+                if (usernameValid && emailValid && pass.length > 0) {
+                    document.getElementById('signupBtn').disabled = false;
+                } else {
+                    document.getElementById('signupBtn').disabled = true;
+                }
+            }
+
+            // Login
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                var email = document.getElementById('loginEmail').value;
+                var pass = document.getElementById('loginPassword').value;
+                if (email && pass) {
+                    document.getElementById('loginSection').classList.add('hidden');
+                    document.getElementById('contentSection').classList.remove('hidden');
+                    alert('Login successful! Welcome to F1: Apex');
+                }
+            });
+
+            // Signup
+            document.getElementById('signupBtn').addEventListener('click', function() {
+                document.getElementById('signupSection').classList.add('hidden');
+                document.getElementById('contentSection').classList.remove('hidden');
+                alert('Account created! Welcome to F1: Apex');
+            });
+
+            // Tabs
+            var tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var tab = this.getAttribute('data-tab');
+                    
+                    document.querySelectorAll('.tab-btn').forEach(function(b) {
+                        b.classList.remove('active');
+                    });
+                    document.querySelectorAll('.tab-content').forEach(function(c) {
+                        c.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    document.getElementById(tab + '-tab').classList.add('active');
+                });
+            });
+
+            // Platform selection
+            var platforms = document.querySelectorAll('.feature-highlight[data-platform]');
+            platforms.forEach(function(plat) {
+                plat.addEventListener('click', function() {
+                    platforms.forEach(function(p) {
+                        p.style.borderColor = 'rgba(229, 9, 20, 0.4)';
+                    });
+                    this.style.borderColor = '#e50914';
+                    
+                    var p = this.getAttribute('data-platform');
+                    selectedPlatform = p.charAt(0).toUpperCase() + p.slice(1);
+                    document.getElementById('downloadBtn').textContent = 'Download for ' + selectedPlatform;
+                });
+            });
+
+            // Download
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                var files = {
+                    Windows: 'F1_Apex_v2.5.0_Win64.exe',
+                    Mac: 'F1_Apex_v2.5.0_macOS.dmg',
+                    Linux: 'F1_Apex_v2.5.0_Linux.AppImage'
+                };
+                
+                this.textContent = 'Preparing Download...';
+                this.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                
+                var btn = this;
+                setTimeout(function() {
+                    alert('Starting download: ' + files[selectedPlatform]);
+                    btn.textContent = 'Download for ' + selectedPlatform;
+                    btn.style.background = 'linear-gradient(135deg, #e50914 0%, #ff0a16 100%)';
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
