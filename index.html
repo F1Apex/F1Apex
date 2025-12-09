@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1: Apex - Official Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -2;
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100vw;
+            min-height: 100vh;
+            width: 177.77777778vh;
+            height: 56.25vw;
+            transform: translate(-50%, -50%);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(26, 26, 46, 0.8) 50%, rgba(229, 9, 20, 0.3) 100%);
+            z-index: -1;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .logo {
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .logo img {
+            height: 120px;
+            width: auto;
+            filter: drop-shadow(0 0 20px rgba(229, 9, 20, 0.5));
+        }
+
+        .apex {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 1rem;
+            margin-bottom: 3rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(229, 9, 20, 0.5)); }
+            to { filter: drop-shadow(0 0 40px rgba(229, 9, 20, 0.8)); }
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.95);
+            border-top: 2px solid rgba(229, 9, 20, 0.3);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            color: #e50914;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .footer-section a:hover {
+            color: #e50914;
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(229, 9, 20, 0.2);
+            border: 2px solid rgba(229, 9, 20, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #e50914;
+            border-color: #e50914;
+            transform: translateY(-3px);
+        }
+
+        .footer-logo {
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo img {
+            height: 60px;
+            width: auto;
+            opacity: 0.8;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #e50914;
+        }
+
+        .rating-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(229, 9, 20, 0.2);
+            border: 1px solid rgba(229, 9, 20, 0.4);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 1rem;
+        }
+
+        .auth-section {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(229, 9, 20, 0.4);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e50914;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e50914;
+        }
+
+        .form-group input.error {
+            border-color: #ff4444;
+        }
+
+        .form-group input.valid {
+            border-color: #44ff44;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .auth-btn {
+            background: linear-gradient(135deg, #e50914 0%, #ff0a16 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .auth-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.6);
+        }
+
+        .switch-auth {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .switch-auth a {
+            color: #e50914;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
+
+        .content-section {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(229, 9, 20, 0.3);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: #e50914;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #e50914 0%, #ff0a16 100%);
+            border-color: #e50914;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(229, 9, 20, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box h2 {
+            color: #e50914;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .info-box h3 {
+            color: #e50914;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .info-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box ul {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .info-box ul li {
+            font-size: 1.1rem;
+            line-height: 2;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .info-box ul li::before {
+            content: "▸";
+            color: #e50914;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-highlight {
+            background: rgba(229, 9, 20, 0.1);
+            border: 2px solid rgba(229, 9, 20, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feature-highlight:hover {
+            transform: translateY(-5px);
+            border-color: #e50914;
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.3);
+        }
+
+        .feature-highlight h4 {
+            color: #e50914;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .stat-card {
+            background: rgba(229, 9, 20, 0.15);
+            border: 2px solid rgba(229, 9, 20, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #e50914;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+        }
+
+        .team-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(229, 9, 20, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .team-card:hover {
+            border-color: #e50914;
+            transform: translateY(-5px);
+        }
+
+        .team-name {
+            color: #e50914;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .circuit-list {
+            columns: 2;
+            gap: 2rem;
+        }
+
+        .circuit-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .circuit-item::before {
+            content: "🏁";
+            position: absolute;
+            left: 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .update-banner {
+            background: linear-gradient(135deg, rgba(229, 9, 20, 0.2) 0%, rgba(255, 10, 22, 0.2) 100%);
+            border: 2px solid #e50914;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .update-banner h3 {
+            color: #e50914;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .logo img {
+                height: 80px;
+            }
+            .apex {
+                font-size: 2rem;
+                letter-spacing: 0.5rem;
+            }
+            .auth-section {
+                padding: 2rem;
+            }
+            .circuit-list {
+                columns: 1;
+            }
+            .info-box {
+                padding: 2rem;
+            }
+            .info-box h2 {
+                font-size: 2rem;
+            }
+            .info-box h3 {
+                font-size: 1.5rem;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <iframe src="https://player.vimeo.com/video/1145058533?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1&quality=1080p" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; encrypted-media"></iframe>
+    </div>
+    <div class="video-overlay"></div>
+
+    <div class="hero">
+        <div class="logo">
+            <img src="https://logos-world.net/wp-content/uploads/2023/12/F1-Logo.png" alt="F1 Logo">
+        </div>
+        <div class="apex">APEX</div>
+        
+        <div class="auth-section" id="loginSection">
+            <h2 style="margin-bottom: 2rem; font-size: 1.8rem;">Login to Download</h2>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
+            </div>
+            
+            <button class="auth-btn" id="loginBtn">Login</button>
+            
+            <div class="switch-auth">
+                Don't have an account? <a id="showSignupLink">Sign up here</a>
+            </div>
+        </div>
+
+        <div class="auth-section hidden" id="signupSection">
+            <h2 style="margin-bottom: 2rem; font-size: 1.8rem;">Create Account</h2>
+            
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="signupUsername" placeholder="Minimum 4 characters">
+                <div class="error-message" id="usernameError">Username must be at least 4 characters long</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email">
+                <div class="error-message" id="emailError">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="signupPassword" placeholder="Create a password">
+            </div>
+            
+            <button class="auth-btn" id="signupBtn" disabled>Sign Up</button>
+            
+            <div class="switch-auth">
+                Already have an account? <a id="showLoginLink">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section hidden" id="contentSection">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="download">Download</button>
+            <button class="tab-btn" data-tab="features">Features</button>
+            <button class="tab-btn" data-tab="gameplay">Gameplay</button>
+            <button class="tab-btn" data-tab="teams">Teams & Drivers</button>
+            <button class="tab-btn" data-tab="circuits">Circuits</button>
+            <button class="tab-btn" data-tab="career">Career Mode</button>
+            <button class="tab-btn" data-tab="requirements">Requirements</button>
+            <button class="tab-btn" data-tab="multiplayer">Multiplayer</button>
+        </div>
+
+        <div class="tab-content active" id="download-tab">
+            <div class="update-banner">
+                <h3>🏆 Latest Update: Version 2.5.0</h3>
+                <p style="font-size: 1.1rem;">New Las Vegas Night Circuit • Enhanced Graphics • Improved AI • Bug Fixes</p>
+            </div>
+
+            <div class="info-box">
+                <h2>Download F1: Apex</h2>
+                <p>Experience the ultimate Formula 1 racing simulation with cutting-edge graphics, realistic physics, and authentic F1 action.</p>
+                
+                <h3>Select Your Platform</h3>
+                <div class="grid-2" style="margin-bottom: 2rem;">
+                    <div class="feature-highlight" data-platform="windows">
+                        <h4>🪟 Windows</h4>
+                        <p>Windows 10/11 (64-bit)</p>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Download Size: 4.2 GB</p>
+                    </div>
+                    <div class="feature-highlight" data-platform="mac">
+                        <h4>🍎 MacOS</h4>
+                        <p>macOS 11 Big Sur or later</p>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Download Size: 4.5 GB</p>
+                    </div>
+                    <div class="feature-highlight" data-platform="linux">
+                        <h4>🐧 Linux</h4>
+                        <p>Ubuntu 20.04+ / Fedora 35+</p>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Download Size: 4.1 GB</p>
+                    </div>
+                </div>
+                
+                <button class="auth-btn" id="downloadBtn">Download for Windows</button>
+            </div>
+
+            <div class="info-box">
+                <h2>What's Included</h2>
+                <div class="grid-3">
+                    <div class="stat-card">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">F1 Teams</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">20</div>
+                        <div class="stat-label">Drivers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">Circuits</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="features-tab">
+            <div class="info-box">
+                <h2>Game Features</h2>
+                <p>F1: Apex delivers the most comprehensive Formula 1 racing experience with unparalleled realism and immersion.</p>
+                
+                <h3>Official F1 License</h3>
+                <p>Race with all official 2024 teams, drivers, and circuits. Every detail is authentic, from car liveries to team radio communications.</p>
+                <ul>
+                    <li>20+ Licensed Vehicles from all 10 F1 teams</li>
+                    <li>23 Authentic Circuits from the championship calendar</li>
+                    <li>Official team liveries and sponsors</li>
+                    <li>Real driver appearances and characteristics</li>
+                </ul>
+
+                <h3>Advanced Physics Engine</h3>
+                <p>Experience Formula 1 like never before with our revolutionary physics simulation.</p>
+                <ul>
+                    <li>Dynamic weather system with realistic rain effects</li>
+                    <li>Advanced tire modeling with wear, temperature, and pressure simulation</li>
+                    <li>Realistic damage system affecting aerodynamics and performance</li>
+                    <li>DRS (Drag Reduction System) activation zones</li>
+                    <li>ERS (Energy Recovery System) management</li>
+                    <li>Fuel consumption and weight distribution</li>
+                </ul>
+
+                <h3>Graphics & Presentation</h3>
+                <ul>
+                    <li>Ray-traced reflections and shadows</li>
+                    <li>4K resolution support</li>
+                    <li>120 FPS performance on supported hardware</li>
+                    <li>Authentic TV-style broadcast cameras</li>
+                    <li>Detailed cockpit views with working displays</li>
+                    <li>Photorealistic track environments</li>
+                </ul>
+
+                <h3>Customization</h3>
+                <ul>
+                    <li>Extensive car setup options (suspension, gearing, aerodynamics)</li>
+                    <li>Custom livery editor</li>
+                    <li>Driver suit and helmet customization</li>
+                    <li>Team emblem creator</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="gameplay-tab">
+            <div class="info-box">
+                <h2>Gameplay Mechanics</h2>
+                <p>Master the art of Formula 1 racing with intuitive controls and realistic driving dynamics.</p>
+                
+                <h3>Driving Assists</h3>
+                <p>Adjust the difficulty to match your skill level with a comprehensive suite of driving aids.</p>
+                <ul>
+                    <li>Automatic or manual transmission with clutch control</li>
+                    <li>Adjustable brake assist (Off, Low, Medium, High)</li>
+                    <li>Traction control settings (Off to Full)</li>
+                    <li>ABS (Anti-lock Braking System) toggle</li>
+                    <li>Racing line guidance (Corners only or Full)</li>
+                    <li>Steering assist for gamepad users</li>
+                </ul>
+
+                <h3>Race Weekend Structure</h3>
+                <ul>
+                    <li>Free Practice sessions (FP1, FP2, FP3)</li>
+                    <li>Qualifying (Q1, Q2, Q3 knockout format)</li>
+                    <li>Sprint Race weekends</li>
+                    <li>Full Grand Prix distance races</li>
+                    <li>Customizable race length (25%, 50%, 75%, 100%)</li>
+                </ul>
+
+                <h3>Strategy Elements</h3>
+                <ul>
+                    <li>Tire strategy planning (Soft, Medium, Hard compounds)</li>
+                    <li>Fuel management</li>
+                    <li>ERS deployment modes</li>
+                    <li>Pit stop timing and execution</li>
+                    <li>Weather forecasting and strategy adjustments</li>
+                </ul>
+
+                <h3>Controls Support</h3>
+                <ul>
+                    <li>Keyboard and mouse</li>
+                    <li>Xbox and PlayStation controllers</li>
+                    <li>Racing wheel support (Logitech, Thrustmaster, Fanatec)</li>
+                    <li>Force feedback customization</li>
+                    <li>VR headset compatibility</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="teams-tab">
+            <div class="info-box">
+                <h2>2024 F1 Teams & Drivers</h2>
+                <p>Race as your favorite team with authentic car performance characteristics.</p>
+
+                <div class="grid-2">
+                    <div class="team-card">
+                        <div class="team-name">Red Bull Racing</div>
+                        <p>Max Verstappen • Sergio Pérez</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">Mercedes-AMG Petronas</div>
+                        <p>Lewis Hamilton • George Russell</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">Scuderia Ferrari</div>
+                        <p>Charles Leclerc • Carlos Sainz</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">McLaren F1 Team</div>
+                        <p>Lando Norris • Oscar Piastri</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">Aston Martin Aramco</div>
+                        <p>Fernando Alonso • Lance Stroll</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">Alpine F1 Team</div>
+                        <p>Pierre Gasly • Esteban Ocon</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">Williams Racing</div>
+                        <p>Alexander Albon • Logan Sargeant</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">Visa Cash App RB</div>
+                        <p>Daniel Ricciardo • Yuki Tsunoda</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">Stake F1 Team</div>
+                        <p>Valtteri Bottas • Zhou Guanyu</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-name">Haas F1 Team</div>
+                        <p>Kevin Magnussen • Nico Hülkenberg</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">Authentic Driver Characteristics</h3>
+                <p>Each driver features unique attributes that affect their performance:</p>
+                <ul>
+                    <li>Qualifying pace</li>
+                    <li>Race craft and overtaking ability</li>
+                    <li>Tire management skills</li>
+                    <li>Wet weather performance</li>
+                    <li>Consistency and reliability</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="circuits-tab">
+            <div class="info-box">
+                <h2>Championship Circuits</h2>
+                <p>Race on all 23 official circuits from the 2024 Formula 1 calendar, each faithfully recreated with laser-scanned accuracy.</p>
+
+                <h3>Featured Tracks</h3>
+                <div class="circuit-list">
+                    <div class="circuit-item">Bahrain International Circuit</div>
+                    <div class="circuit-item">Jeddah Corniche Circuit</div>
+                    <div class="circuit-item">Albert Park Circuit (Australia)</div>
+                    <div class="circuit-item">Suzuka Circuit (Japan)</div>
+                    <div class="circuit-item">Shanghai International Circuit</div>
+                    <div class="circuit-item">Miami International Autodrome</div>
+                    <div class="circuit-item">Imola (Autodromo Enzo e Dino Ferrari)</div>
+                    <div class="circuit-item">Circuit de Monaco</div>
+                    <div class="circuit-item">Circuit Gilles Villeneuve (Canada)</div>
+                    <div class="circuit-item">Circuit de Barcelona-Catalunya</div>
+                    <div class="circuit-item">Red Bull Ring (Austria)</div>
+                    <div class="circuit-item">Silverstone Circuit (UK)</div>
+                    <div class="circuit-item">Hungaroring (Hungary)</div>
+                    <div class="circuit-item">Circuit de Spa-Francorchamps</div>
+                    <div class="circuit-item">Zandvoort Circuit (Netherlands)</div>
+                    <div class="circuit-item">Monza (Autodromo Nazionale)</div>
+                    <div class="circuit-item">Baku City Circuit</div>
+                    <div class="circuit-item">Marina Bay Street Circuit (Singapore)</div>
+                    <div class="circuit-item">Circuit of the Americas (USA)</div>
+                    <div class="circuit-item">Autódromo Hermanos Rodríguez (Mexico)</div>
+                    <div class="circuit-item">Interlagos (Brazil)</div>
+                    <div class="circuit-item">Las Vegas Street Circuit</div>
+                    <div class="circuit-item">Yas Marina Circuit (Abu Dhabi)</div>
+                </div>
+
+                <h3>Track Features</h3>
+                <ul>
+                    <li>Laser-scanned track surfaces for maximum accuracy</li>
+                    <li>Dynamic time of day transitions</li>
+                    <li>Realistic ambient audio from each location</li>
+                    <li>Detailed pit lane and paddock areas</li>
+                    <li>Authentic marshal posts and safety features</li>
+                    <li>Track evolution throughout race weekends</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="career-tab">
+            <div class="info-box">
+                <h2>Career Mode</h2>
+                <p>Build your legacy from rookie to champion in an immersive multi-season career experience.</p>
+
+                <h3>Journey to Glory</h3>
+                <p>Start as a rookie driver and work your way up through the ranks to become a Formula 1 World Champion.</p>
+                <ul>
+                    <li>Create your own driver with customizable appearance</li>
+                    <li>Choose your starting team from backmarkers to midfield</li>
+                    <li>Earn contract offers from better teams based on performance</li>
+                    <li>Up to 10 seasons of career progression</li>
+                </ul>
+
+                <h3>Team Management</h3>
+                <ul>
+                    <li>R&D development system to upgrade your car</li>
+                    <li>Resource allocation between different car components</li>
+                    <li>Factory upgrades and facilities improvements</li>
+                    <li>Sponsor negotiations and contracts</li>
+                    <li>Team morale management</li>
+                </ul>
+
+                <h3>Driver Rivalries</h3>
+                <p>Build relationships and rivalries with other drivers through on-track battles and media interactions.</p>
+                <ul>
+                    <li>Dynamic rivalry system based on incidents</li>
+                    <li>Post-race interviews affecting public opinion</li>
+                    <li>Teammate relationships and competition</li>
+                    <li>Reputation system influencing contract offers</li>
+                </ul>
+
+                <h3>Championships & Achievements</h3>
+                <ul>
+                    <li>Drivers' Championship and Constructors' Championship</li>
+                    <li>100+ achievements to unlock</li>
+                    <li>Historical statistics tracking</li>
+                    <li>Season highlights and replays</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="requirements-tab">
+            <div class="info-box">
+                <h2>System Requirements</h2>
+                
+                <h3>Minimum Requirements</h3>
+                <ul>
+                    <li><strong>OS:</strong> Windows 10 64-bit / macOS 11 / Ubuntu 20.04</li>
+                    <li><strong>Processor:</strong> Intel i5-6600K / AMD Ryzen 5 1600</li>
+                    <li><strong>Memory:</strong> 8 GB RAM</li>
+                    <li><strong>Graphics:</strong> NVIDIA GTX 1060 / AMD RX 580</li>
+                    <li><strong>DirectX:</strong> Version 12</li>
+                    <li><strong>Storage:</strong> 15 GB available space</li>
+                    <li><strong>Additional:</strong> Broadband internet connection for multiplayer</li>
+                </ul>
+
+                <h3>Recommended Requirements</h3>
+                <ul>
+                    <li><strong>OS:</strong> Windows 11 64-bit / macOS 13 / Ubuntu 22.04</li>
+                    <li><strong>Processor:</strong> Intel i7-9700K / AMD Ryzen 7 3700X</li>
+                    <li><strong>Memory:</strong> 16 GB RAM</li>
+                    <li><strong>Graphics:</strong> NVIDIA RTX 3070 / AMD RX 6800</li>
+                    <li><strong>DirectX:</strong> Version 12</li>
+                    <li><strong>Storage:</strong> 15 GB available space (SSD recommended)</li>
+                    <li><strong>Additional:</strong> Racing wheel and pedals for optimal experience</li>
+                </ul>
+
+                <h3>Ultra Settings (4K/Ray Tracing)</h3>
+                <ul>
+                    <li><strong>Processor:</strong> Intel i9-12900K / AMD Ryzen 9 5950X</li>
+                    <li><strong>Memory:</strong> 32 GB RAM</li>
+                    <li><strong>Graphics:</strong> NVIDIA RTX 4080 / AMD RX 7900 XTX</li>
+                    <li><strong>Storage:</strong> NVMe SSD required</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="multiplayer-tab">
+            <div class="info-box">
+                <h2>Multiplayer Experience</h2>
+                <p>Compete against racers worldwide in thrilling online championships and events.</p>
+
+                <h3>Game Modes</h3>
+                <ul>
+                    <li><strong>Sprint Races:</strong> Quick 15-minute races for instant action</li>
+                    <li><strong>Grand Prix:</strong> Full-length championship races</li>
+                    <li><strong>Time Trials:</strong> Set the fastest lap times on leaderboards</li>
+                    <li><strong>Ranked Championships:</strong> Compete in seasonal leagues</li>
+                    <li><strong>Custom Lobbies:</strong> Create private races with friends</li>
+                    <li><strong>Team Championships:</strong> Coordinate with teammates</li>
+                </ul>
+
+                <h3>Online Features</h3>
+                <ul>
+                    <li>Cross-platform play between PC, Mac, and Linux</li>
+                    <li>Matchmaking based on skill rating</li>
+                    <li>Safety rating system to promote clean racing</li>
+                    <li>Voice chat and team radio</li>
+                    <li>Spectator mode with multiple camera angles</li>
+                    <li>Race replays and highlights sharing</li>
+                </ul>
+
+                <h3>Esports Integration</h3>
+                <ul>
+                    <li>Official F1 Apex Championship Series</li>
+                    <li>Regional qualifiers and global finals</li>
+                    <li>Leaderboards and rankings</li>
+                    <li>Tournament mode with bracket systems</li>
+                    <li>Live broadcast integration</li>
+                </ul>
+
+                <h3>Social Features</h3>
+                <ul>
+                    <li>Friend system and invites</li>
+                    <li>Racing clubs and communities</li>
+                    <li>Achievement sharing</li>
+                    <li>Global statistics and records</li>
+                    <li>In-game messaging</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="https://logos-world.net/wp-content/uploads/2023/12/F1-Logo.png" alt="F1 Logo">
+                </div>
+                <p>Experience the ultimate Formula 1 racing simulation. Official licensed game featuring all teams, drivers, and circuits.</p>
+                <div class="rating-badge">
+                    ⭐ ESRB Rating: E for Everyone
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Game</h4>
+                <ul>
+                    <li><a href="#download-tab">Download</a></li>
+                    <li><a href="#features-tab">Features</a></li>
+                    <li><a href="#teams-tab">Teams & Drivers</a></li>
+                    <li><a href="#multiplayer-tab">Multiplayer</a></li>
+                    <li><a href="#">What's New</a></li>
+                    <li><a href="#">Patch Notes</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Technical Support</a></li>
+                    <li><a href="#">Report a Bug</a></li>
+                    <li><a href="#">System Requirements</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="#">Forums</a></li>
+                    <li><a href="#">Discord Server</a></li>
+                    <li><a href="#">Leaderboards</a></li>
+                    <li><a href="#">Esports</a></li>
+                    <li><a href="#">Content Creators</a></li>
+                    <li><a href="#">Fan Kit</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press Kit</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+                <div class="social-links">
+                    <a href="#" title="Twitter">𝕏</a>
+                    <a href="#" title="Facebook">f</a>
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="YouTube">▶</a>
+                    <a href="#" title="Discord">💬</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 F1 Apex. All rights reserved. The F1 FORMULA 1 logo, F1 logo, FORMULA 1, F1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX and related marks are trademarks of Formula One Licensing BV.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Legal Notice</a>
+                <a href="#">EULA</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        var selectedPlatform = 'Windows';
+        var isValidSignup = false;
+
+        function showSection(hideId, showId) {
+            document.getElementById(hideId).classList.add('hidden');
+            document.getElementById(showId).classList.remove('hidden');
+        }
+
+        function validateInput(input, isValid, errorId) {
+            if (isValid) {
+                input.classList.remove('error');
+                input.classList.add('valid');
+                if (errorId) document.getElementById(errorId).classList.remove('show');
+            } else if (input.value.length > 0) {
+                input.classList.add('error');
+                input.classList.remove('valid');
+                if (errorId) document.getElementById(errorId).classList.add('show');
+            }
+        }
+
+        function checkSignupValid() {
+            var username = document.getElementById('signupUsername').value;
+            var email = document.getElementById('signupEmail').value;
+            var password = document.getElementById('signupPassword').value;
+            
+            isValidSignup = username.length >= 4 && email.includes('@') && password.length > 0;
+            document.getElementById('signupBtn').disabled = !isValidSignup;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auth switching
+            document.getElementById('showSignupLink').addEventListener('click', function() {
+                showSection('loginSection', 'signupSection');
+            });
+
+            document.getElementById('showLoginLink').addEventListener('click', function() {
+                showSection('signupSection', 'loginSection');
+            });
+
+            // Signup validation
+            document.getElementById('signupUsername').addEventListener('input', function() {
+                validateInput(this, this.value.length >= 4, 'usernameError');
+                checkSignupValid();
+            });
+
+            document.getElementById('signupEmail').addEventListener('input', function() {
+                validateInput(this, this.value.includes('@'), 'emailError');
+                checkSignupValid();
+            });
+
+            document.getElementById('signupPassword').addEventListener('input', checkSignupValid);
+
+            // Login
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                var email = document.getElementById('loginEmail').value;
+                var pass = document.getElementById('loginPassword').value;
+                if (email && pass) {
+                    showSection('loginSection', 'contentSection');
+                    alert('Login successful! Welcome to F1: Apex');
+                } else {
+                    alert('Please enter both email and password');
+                }
+            });
+
+            // Signup
+            document.getElementById('signupBtn').addEventListener('click', function() {
+                if (isValidSignup) {
+                    showSection('signupSection', 'contentSection');
+                    alert('Account created! Welcome to F1: Apex');
+                }
+            });
+
+            // Tab switching
+            var tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var tab = this.getAttribute('data-tab');
+                    
+                    tabBtns.forEach(function(b) { b.classList.remove('active'); });
+                    document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+                    
+                    this.classList.add('active');
+                    document.getElementById(tab + '-tab').classList.add('active');
+                });
+            });
+
+            // Platform selection
+            var platforms = document.querySelectorAll('.feature-highlight[data-platform]');
+            platforms.forEach(function(plat) {
+                plat.addEventListener('click', function() {
+                    platforms.forEach(function(p) {
+                        p.style.borderColor = 'rgba(229, 9, 20, 0.4)';
+                    });
+                    this.style.borderColor = '#e50914';
+                    
+                    var p = this.getAttribute('data-platform');
+                    selectedPlatform = p.charAt(0).toUpperCase() + p.slice(1);
+                    document.getElementById('downloadBtn').textContent = 'Download for ' + selectedPlatform;
+                });
+            });
+
+            // Download button
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                var files = {
+                    Windows: 'F1_Apex_v2.5.0_Win64.exe',
+                    Mac: 'F1_Apex_v2.5.0_macOS.dmg',
+                    Linux: 'F1_Apex_v2.5.0_Linux.AppImage'
+                };
+                
+                this.textContent = 'Preparing Download...';
+                this.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                
+                var btn = this;
+                setTimeout(function() {
+                    alert('Starting download: ' + files[selectedPlatform]);
+                    btn.textContent = 'Download for ' + selectedPlatform;
+                    btn.style.background = 'linear-gradient(135deg, #e50914 0%, #ff0a16 100%)';
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
