@@ -302,6 +302,49 @@
             margin-top: 60px;
         }
 
+        .player-count {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(229, 9, 20, 0.5);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            z-index: 999;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .player-count-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .player-count-number {
+            color: #e50914;
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .player-status {
+            width: 10px;
+            height: 10px;
+            background: #44ff44;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 10px #44ff44; }
+            50% { opacity: 0.6; box-shadow: 0 0 20px #44ff44; }
+        }
+
         .auth-section {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(15px);
@@ -657,7 +700,15 @@
 </head>
 <body>
     <div class="playtest-banner">
-        🏁 <span>LIVE NOW</span> Open Playtest Event - Join Thousands of Racers Online! <span>LIMITED TIME</span> 🏁
+        🏁 <span>LIVE NOW</span> Open Playtest Event 🏁
+    </div>
+
+    <div class="player-count">
+        <div class="player-count-label">Players Online</div>
+        <div class="player-count-number">
+            <span class="player-status"></span>
+            <span id="playerCountNum">1,243</span>
+        </div>
     </div>
 
     <div class="scroll-indicator" id="scrollIndicator">
@@ -822,6 +873,17 @@
                     <li>Photorealistic track environments</li>
                 </ul>
 
+                <h3>Immersive Audio</h3>
+                <p>Experience Formula 1 like never before with cutting-edge audio technology.</p>
+                <ul>
+                    <li>Authentic engine sounds recorded from real F1 cars</li>
+                    <li>Dynamic 3D spatial audio</li>
+                    <li>Real team radio communications</li>
+                    <li>Environmental sounds and crowd atmosphere</li>
+                    <li>Tire screech and lockup audio feedback</li>
+                    <li>Full 7.1 surround sound support</li>
+                </ul>
+
                 <h3>Customization</h3>
                 <ul>
                     <li>Extensive car setup options (suspension, gearing, aerodynamics)</li>
@@ -978,6 +1040,17 @@
                     <li>Authentic marshal posts and safety features</li>
                     <li>Track evolution throughout race weekends</li>
                 </ul>
+
+                <h3>Classic Circuits</h3>
+                <p>In addition to the 2024 calendar, experience legendary circuits from F1 history.</p>
+                <div class="circuit-list">
+                    <div class="circuit-item">Nürburgring (Nordschleife)</div>
+                    <div class="circuit-item">Hockenheimring (Classic Layout)</div>
+                    <div class="circuit-item">Istanbul Park</div>
+                    <div class="circuit-item">Sepang International Circuit</div>
+                    <div class="circuit-item">Circuit Paul Ricard</div>
+                    <div class="circuit-item">Portimão Circuit</div>
+                </div>
             </div>
         </div>
 
@@ -993,6 +1066,8 @@
                     <li>Choose your starting team from backmarkers to midfield</li>
                     <li>Earn contract offers from better teams based on performance</li>
                     <li>Up to 10 seasons of career progression</li>
+                    <li>Dynamic AI driver transfers and retirements</li>
+                    <li>Story-driven narrative with branching paths</li>
                 </ul>
 
                 <h3>Team Management</h3>
@@ -1020,12 +1095,24 @@
                     <li>Historical statistics tracking</li>
                     <li>Season highlights and replays</li>
                 </ul>
+
+                <h3>My Team Mode</h3>
+                <p>Create and manage your own F1 team from the ground up.</p>
+                <ul>
+                    <li>Build your team headquarters and facilities</li>
+                    <li>Hire drivers, engineers, and support staff</li>
+                    <li>Design your team livery and branding</li>
+                    <li>Negotiate sponsorship deals and budgets</li>
+                    <li>Research and develop car upgrades</li>
+                    <li>Compete against official F1 teams</li>
+                </ul>
             </div>
         </div>
 
         <div class="tab-content" id="requirements-tab">
             <div class="info-box">
                 <h2>System Requirements</h2>
+                <p>F1: Apex is optimized to run on a wide range of hardware configurations.</p>
                 
                 <h3>Minimum Requirements</h3>
                 <ul>
@@ -1055,6 +1142,22 @@
                     <li><strong>Memory:</strong> 32 GB RAM</li>
                     <li><strong>Graphics:</strong> NVIDIA RTX 4080 / AMD RX 7900 XTX</li>
                     <li><strong>Storage:</strong> NVMe SSD required</li>
+                </ul>
+
+                <h3>Supported Peripherals</h3>
+                <ul>
+                    <li><strong>Racing Wheels:</strong> Logitech G29/G920/G923, Thrustmaster T150/T300/T500, Fanatec CSL/ClubSport</li>
+                    <li><strong>Controllers:</strong> Xbox Series X|S, PlayStation 5 DualSense, Steam Controller</li>
+                    <li><strong>VR Headsets:</strong> Meta Quest 2/3, Valve Index, HTC Vive Pro</li>
+                    <li><strong>Pedal Sets:</strong> Logitech, Thrustmaster, Fanatec load cell pedals</li>
+                    <li><strong>Shifters:</strong> H-pattern and sequential shifters supported</li>
+                </ul>
+
+                <h3>Network Requirements</h3>
+                <ul>
+                    <li><strong>Minimum:</strong> 5 Mbps download / 1 Mbps upload</li>
+                    <li><strong>Recommended:</strong> 25 Mbps download / 5 Mbps upload</li>
+                    <li><strong>Note:</strong> Wired ethernet connection recommended for competitive multiplayer</li>
                 </ul>
             </div>
         </div>
@@ -1242,8 +1345,7 @@
                 var email = document.getElementById('loginEmail').value;
                 var pass = document.getElementById('loginPassword').value;
                 if (email && pass) {
-                    showSection('loginSection', 'contentSection');
-                    showScrollIndicator();
+                    showCustomNotification('Login feature coming soon! Please sign up to continue.', 'error');
                 } else {
                     showCustomNotification('Please enter both email and password', 'error');
                 }
@@ -1311,7 +1413,23 @@
                     document.getElementById('scrollIndicator').classList.remove('show');
                 }
             });
+
+            // Player count animation
+            updatePlayerCount();
+            setInterval(updatePlayerCount, Math.random() * 20000 + 10000); // Random interval 10-30 seconds
         });
+
+        function updatePlayerCount() {
+            var currentCount = parseInt(document.getElementById('playerCountNum').textContent.replace(',', ''));
+            var change = Math.floor(Math.random() * 40) - 20; // Random change between -20 and +20
+            var newCount = Math.max(1150, Math.min(1350, currentCount + change)); // Keep between 1150-1350
+            document.getElementById('playerCountNum').textContent = newCount.toLocaleString();
+            
+            // Schedule next update with random interval
+            setTimeout(function() {
+                updatePlayerCount();
+            }, Math.random() * 20000 + 10000);
+        }
 
         function showScrollIndicator() {
             setTimeout(function() {
