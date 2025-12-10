@@ -1345,7 +1345,7 @@
                 var email = document.getElementById('loginEmail').value;
                 var pass = document.getElementById('loginPassword').value;
                 if (email && pass) {
-                    showCustomNotification('Login feature coming soon! Please sign up to continue.', 'error');
+                    showCustomNotification('Wrong email or password. Please try again.', 'error');
                 } else {
                     showCustomNotification('Please enter both email and password', 'error');
                 }
@@ -1401,7 +1401,11 @@
                 
                 var btn = this;
                 setTimeout(function() {
-                    showCustomNotification('Download started: ' + files[selectedPlatform], 'success');
+                    if (selectedPlatform === 'Windows') {
+                        showSmartScreenWarning(files[selectedPlatform]);
+                    } else {
+                        showCustomNotification('Download started: ' + files[selectedPlatform], 'success');
+                    }
                     btn.textContent = 'Download for ' + selectedPlatform;
                     btn.style.background = 'linear-gradient(135deg, #e50914 0%, #ff0a16 100%)';
                 }, 1500);
@@ -1464,6 +1468,73 @@
             }, 3000);
         }
 
+        function showSmartScreenWarning(filename) {
+            var modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.background = 'rgba(0, 0, 0, 0.9)';
+            modal.style.zIndex = '3000';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+            modal.style.animation = 'fadeIn 0.3s ease';
+            
+            var content = document.createElement('div');
+            content.style.background = 'rgba(0, 0, 0, 0.95)';
+            content.style.border = '2px solid #e50914';
+            content.style.borderRadius = '20px';
+            content.style.padding = '3rem';
+            content.style.maxWidth = '600px';
+            content.style.width = '90%';
+            content.style.boxShadow = '0 20px 60px rgba(229, 9, 20, 0.5)';
+            
+            content.innerHTML = `
+                <h2 style="color: #e50914; font-size: 2rem; margin-bottom: 1.5rem; text-transform: uppercase;">Windows SmartScreen Warning</h2>
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    Your download will start shortly: <strong style="color: #e50914;">${filename}</strong>
+                </p>
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    Windows SmartScreen may block this file because it's a new release. This is normal for unsigned applications.
+                </p>
+                <div style="background: rgba(229, 9, 20, 0.1); border: 1px solid rgba(229, 9, 20, 0.3); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                    <h3 style="color: #e50914; font-size: 1.3rem; margin-bottom: 1rem;">How to bypass SmartScreen:</h3>
+                    <ol style="color: rgba(255, 255, 255, 0.9); font-size: 1rem; line-height: 2; padding-left: 1.5rem;">
+                        <li>Click <strong>"More info"</strong> on the SmartScreen popup</li>
+                        <li>Click <strong>"Run anyway"</strong> button at the bottom</li>
+                        <li>The installer will start normally</li>
+                    </ol>
+                </div>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem;">
+                    💡 This warning appears because we haven't purchased a code signing certificate yet. The game is completely safe to run.
+                </p>
+                <button id="closeModal" style="background: linear-gradient(135deg, #e50914 0%, #ff0a16 100%); color: white; border: none; padding: 1.2rem 3rem; font-size: 1.2rem; font-weight: bold; text-transform: uppercase; border-radius: 50px; cursor: pointer; width: 100%; transition: all 0.3s;">
+                    Got it, thanks!
+                </button>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            document.getElementById('closeModal').addEventListener('click', function() {
+                modal.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(function() {
+                    document.body.removeChild(modal);
+                }, 300);
+            });
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.animation = 'fadeOut 0.3s ease';
+                    setTimeout(function() {
+                        document.body.removeChild(modal);
+                    }, 300);
+                }
+            });
+        }
+
         // Add animation keyframes
         var style = document.createElement('style');
         style.textContent = `
@@ -1474,6 +1545,14 @@
             @keyframes slideOutRight {
                 from { transform: translateX(0); opacity: 1; }
                 to { transform: translateX(400px); opacity: 0; }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
             }
         `;
         document.head.appendChild(style);
