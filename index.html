@@ -461,6 +461,91 @@
             flex-wrap: wrap;
         }
 
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .leaderboard-table thead {
+            background: rgba(229, 9, 20, 0.2);
+            border-bottom: 2px solid #e50914;
+        }
+
+        .leaderboard-table th {
+            padding: 1rem;
+            text-align: left;
+            color: #e50914;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .leaderboard-table tr:hover {
+            background: rgba(229, 9, 20, 0.1);
+        }
+
+        .rank-cell {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #e50914;
+            width: 60px;
+        }
+
+        .rank-1 { color: #FFD700; }
+        .rank-2 { color: #C0C0C0; }
+        .rank-3 { color: #CD7F32; }
+
+        .time-cell {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #44ff44;
+        }
+
+        .username-cell {
+            font-size: 1.05rem;
+        }
+
+        .highlight-row {
+            background: rgba(229, 9, 20, 0.15);
+            border: 2px solid #e50914;
+        }
+
+        .track-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .track-select-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.7rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .track-select-btn:hover {
+            border-color: #e50914;
+            color: white;
+        }
+
+        .track-select-btn.active {
+            background: linear-gradient(135deg, #e50914 0%, #ff0a16 100%);
+            border-color: #e50914;
+            color: white;
+        }
+
         .tab-btn {
             background: rgba(0, 0, 0, 0.7);
             border: 2px solid rgba(229, 9, 20, 0.3);
@@ -783,6 +868,7 @@
             <button class="tab-btn" data-tab="teams">Teams & Drivers</button>
             <button class="tab-btn" data-tab="circuits">Circuits</button>
             <button class="tab-btn" data-tab="career">Career Mode</button>
+            <button class="tab-btn" data-tab="leaderboards">Leaderboards</button>
             <button class="tab-btn" data-tab="requirements">Requirements</button>
             <button class="tab-btn" data-tab="multiplayer">Multiplayer</button>
         </div>
@@ -1109,6 +1195,17 @@
             </div>
         </div>
 
+        <div class="tab-content" id="leaderboards-tab">
+            <div class="info-box">
+                <h2>Global Leaderboards</h2>
+                <p>Compete for the fastest lap times on every circuit. Can you claim the top spot?</p>
+
+                <div class="track-selector" id="trackSelector"></div>
+
+                <div id="leaderboardContainer"></div>
+            </div>
+        </div>
+
         <div class="tab-content" id="requirements-tab">
             <div class="info-box">
                 <h2>System Requirements</h2>
@@ -1290,6 +1387,135 @@
     <script>
         var selectedPlatform = 'Windows';
         var isValidSignup = false;
+        var currentTrack = 'Miami';
+
+        var leaderboardData = {
+            'Miami': [
+                { rank: 1, username: 'DRS_Specialist', time: '1:28.347' },
+                { rank: 2, username: 'xX_NitroKing_Xx', time: '1:28.892' },
+                { rank: 3, username: 'ApexPredator94', time: '1:29.156' },
+                { rank: 4, username: 'TurboLag_Issue', time: '1:29.473' },
+                { rank: 5, username: 'Beezer', time: '1:29.651' },
+                { rank: 6, username: 'SmoothOperator77', time: '1:29.884' },
+                { rank: 7, username: 'NoLiftShift', time: '1:30.127' },
+                { rank: 8, username: 'BoxBoxBox', time: '1:30.358' },
+                { rank: 9, username: 'CouchPotato_Racer', time: '1:30.592' },
+                { rank: 10, username: 'LateBraker2000', time: '1:30.847' }
+            ],
+            'Monaco': [
+                { rank: 1, username: 'WallToucher', time: '1:12.456' },
+                { rank: 2, username: 'PringlesCan_88', time: '1:12.789' },
+                { rank: 3, username: 'StreetsAreMine', time: '1:13.012' },
+                { rank: 4, username: 'xXx_Monaco_God_xXx', time: '1:13.334' },
+                { rank: 5, username: 'YachtClubMember', time: '1:13.567' },
+                { rank: 6, username: 'BarrierKisser', time: '1:13.892' },
+                { rank: 7, username: 'TunnelVision_Pro', time: '1:14.123' },
+                { rank: 8, username: 'CasinoRoyale_42', time: '1:14.456' },
+                { rank: 9, username: 'NotCareful_Enough', time: '1:14.789' },
+                { rank: 10, username: 'SwimmingPool_Diver', time: '1:15.012' }
+            ],
+            'Silverstone': [
+                { rank: 1, username: 'Bono_My_Tires', time: '1:26.123' },
+                { rank: 2, username: 'RainyDay_Warrior', time: '1:26.478' },
+                { rank: 3, username: 'CopseCorner_Master', time: '1:26.892' },
+                { rank: 4, username: 'BritishInvasion', time: '1:27.234' },
+                { rank: 5, username: 'AbbeyRoad_Racer', time: '1:27.567' },
+                { rank: 6, username: 'xX_RedBull_Fan_Xx', time: '1:27.891' },
+                { rank: 7, username: 'FullWetTyres', time: '1:28.123' },
+                { rank: 8, username: 'CheekyOvertake', time: '1:28.456' },
+                { rank: 9, username: 'ProudBrit_72', time: '1:28.789' },
+                { rank: 10, username: 'MaggottsFlat_King', time: '1:29.012' }
+            ],
+            'Monza': [
+                { rank: 1, username: 'TempleOfSpeed', time: '1:20.567' },
+                { rank: 2, username: 'TifosiFanatic_16', time: '1:20.892' },
+                { rank: 3, username: 'ParabolicaDreamer', time: '1:21.234' },
+                { rank: 4, username: 'PizzaAndPace', time: '1:21.567' },
+                { rank: 5, username: 'NoDownforceNeeded', time: '1:21.891' },
+                { rank: 6, username: 'LesmoLegend', time: '1:22.123' },
+                { rank: 7, username: 'SlipstreamSniper', time: '1:22.456' },
+                { rank: 8, username: 'xXx_Ferrari_xXx', time: '1:22.789' },
+                { rank: 9, username: 'RedZoneRisky', time: '1:23.012' },
+                { rank: 10, username: 'Ascari_Appreciator', time: '1:23.345' }
+            ],
+            'Spa': [
+                { rank: 1, username: 'EauRouge_Survivor', time: '1:44.234' },
+                { rank: 2, username: 'Raidillon_Actually', time: '1:44.678' },
+                { rank: 3, username: 'BelgianWaffles_YT', time: '1:45.012' },
+                { rank: 4, username: 'FullThrottle_Hill', time: '1:45.456' },
+                { rank: 5, username: 'WetRaceEnjoyer', time: '1:45.789' },
+                { rank: 6, username: 'PouhonPerfection', time: '1:46.123' },
+                { rank: 7, username: 'BlanchimonBlast', time: '1:46.456' },
+                { rank: 8, username: 'xX_Kimi_Fan_Xx', time: '1:46.789' },
+                { rank: 9, username: 'ChampagneVibes', time: '1:47.123' },
+                { rank: 10, username: 'ArdenneMaster_99', time: '1:47.456' }
+            ],
+            'Suzuka': [
+                { rank: 1, username: 'Figure8_Legend', time: '1:30.891' },
+                { rank: 2, username: 'JDM_Supremacy', time: '1:31.234' },
+                { rank: 3, username: 'SpoonCurveSpecial', time: '1:31.678' },
+                { rank: 4, username: 'HondaPower_Forever', time: '1:32.012' },
+                { rank: 5, username: '130R_FullSend', time: '1:32.345' },
+                { rank: 6, username: 'CasioTriangle', time: '1:32.789' },
+                { rank: 7, username: 'xXx_Senna_xXx', time: '1:33.123' },
+                { rank: 8, username: 'DriftKing_Suzuka', time: '1:33.456' },
+                { rank: 9, username: 'TokyoNights_Racer', time: '1:33.789' },
+                { rank: 10, username: 'DegnerDominator', time: '1:34.123' }
+            ]
+        };
+
+        function generateLeaderboard(trackName) {
+            var data = leaderboardData[trackName];
+            var html = '<h3 style="color: #e50914; font-size: 1.8rem; margin-bottom: 1.5rem;">' + trackName + ' - Time Trial</h3>';
+            html += '<table class="leaderboard-table">';
+            html += '<thead><tr><th>Rank</th><th>Driver</th><th>Best Time</th></tr></thead>';
+            html += '<tbody>';
+            
+            data.forEach(function(entry) {
+                var rankClass = 'rank-cell';
+                if (entry.rank === 1) rankClass += ' rank-1';
+                else if (entry.rank === 2) rankClass += ' rank-2';
+                else if (entry.rank === 3) rankClass += ' rank-3';
+                
+                var rowClass = entry.username === 'Beezer' ? 'highlight-row' : '';
+                
+                html += '<tr class="' + rowClass + '">';
+                html += '<td class="' + rankClass + '">#' + entry.rank + '</td>';
+                html += '<td class="username-cell">' + entry.username + '</td>';
+                html += '<td class="time-cell">' + entry.time + '</td>';
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table>';
+            return html;
+        }
+
+        function initializeLeaderboards() {
+            var tracks = Object.keys(leaderboardData);
+            var selectorHtml = '';
+            
+            tracks.forEach(function(track) {
+                var activeClass = track === currentTrack ? 'active' : '';
+                selectorHtml += '<button class="track-select-btn ' + activeClass + '" data-track="' + track + '">' + track + '</button>';
+            });
+            
+            document.getElementById('trackSelector').innerHTML = selectorHtml;
+            document.getElementById('leaderboardContainer').innerHTML = generateLeaderboard(currentTrack);
+            
+            // Add event listeners
+            var trackBtns = document.querySelectorAll('.track-select-btn');
+            trackBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var track = this.getAttribute('data-track');
+                    currentTrack = track;
+                    
+                    trackBtns.forEach(function(b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+                    
+                    document.getElementById('leaderboardContainer').innerHTML = generateLeaderboard(track);
+                });
+            });
+        }
 
         function showSection(hideId, showId) {
             document.getElementById(hideId).classList.add('hidden');
@@ -1318,6 +1544,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize leaderboards
+            initializeLeaderboards();
+
             // Auth switching
             document.getElementById('showSignupLink').addEventListener('click', function() {
                 showSection('loginSection', 'signupSection');
